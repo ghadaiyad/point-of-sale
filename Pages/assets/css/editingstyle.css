@@ -1,0 +1,16 @@
+  tbody
+   {
+      text-align: right;
+
+    }
+
+  .page-heading {
+    direction: rtl;
+    text-align: center;
+  }
+.ibox {
+    direction: rtl;
+}
+th{
+  text-align: right;
+}
