@@ -124,7 +124,7 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
                                                     <div class=" row">
                                                         <label class="col-3 col-form-label">القسم او المجموعة</label>
                                                         <div class="col-8">
-                                                        <select class="form-control select2_demo_1" name="group_items" id="group_items">
+                                                        <select class="form-control select2_demo_1" name="group_items" id="group_items" >
                                                               <?php
                                                               $sql = "SELECT * FROM group_items";
                                                         $result = $conn->query($sql);
@@ -149,43 +149,18 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
                                                   </div>
                                               </div>
                                         <div class="ibox-body">
-                                          <table class="table table-striped table-bordered table-hover table-responsive" id="example-table" cellspacing="0" width="100%">
+                                          <table class="table table-striped table-bordered table-hover table-responsive" id="items-table" cellspacing="0" width="100%">
                                               <thead>
                                                   <tr>
-                                                    <th>رقم </th>
+                                                    <th>id </th>
                                                   <th>اسم</th>
                                                   <th>الكمية المتوفرة</th>
                                                       <th>#</th>
                                                   </tr>
                                               </thead>
-                                              <tfoot>
-                                                  <tr>
-                                                    <th>رقم </th>
-                                                  <th>اسم</th>
-                                                  <th>الكمية المتوفرة</th>
-                                                      <th>#</th>
-                                                  </tr>
-                                              </tfoot>
+                                      
                                               <tbody>
-                                                <?php
-                                                $sql = "SELECT I.id ,I.name , I.number_items ,I.cost_price, I.sale_price ,I.total_qty ,I.note , GI.name as GroupItems
-                                                 FROM items I , group_items GI where  GI.id = i.group_items_id ";
-                                                 $result = $conn->query($sql);
-                                                 if (!$result) {
-                                        printf("Errormessage: %s\n", $mysqli->error);
-                                        }
 
-                                        while($row = mysqli_fetch_assoc($result)) {
-                                        ?>
-                                        <tr>
-                                        <td><?= $row["id"]; ?></td>
-                                        <td><?= $row["name"]; ?></td>
-                                            <td class="bg-success color-white widget-stat"><?= $row["total_qty"]; ?></td>
-                                        <td>
-                                        <button type="button" class="btn btn-success" id="addRow" ><span class="ti-plus"></span></button>
-                                        </td>
-                                        </tr>
-                                        <?php } ?>
                                               </tbody>
                                           </table>
                                         </div>
@@ -259,8 +234,6 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
 
                         </div>
                         </div>
-
-
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="direction : rtl;">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -305,36 +278,56 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
   <?php require_once('../Parts/script.html'); ?>
     <!-- PAGE LEVEL SCRIPTS-->
     <script type="text/javascript">
+  $(document).ready(function() {
 
-  var inventory = [];
-  var invoice =
-    {
-      "id" : <?= $new_Id_Invoice ?>,
-      "customer" : "",
-      "note" : "",
-      "total_items" : 0,
-      "total_qty" : 0 ,
-      "total_ammount" : 0
-    };
-        $('#example-table').DataTable({
-            pageLength: 10,
-            "language": {
-   "search": "بحث عن الكتب :",
-   "lengthMenu": "عرض  _MENU_ صفوف",
-        "zeroRecords": "لا يوجد بيانات ",
-        "info": "النتائج _PAGE_ في _PAGES_",
-        "infoEmpty": "لا يوجد بيانات لعرضها",
-        "infoFiltered": "(تم البحث  _MAX_ من جميع البيانات)"
+$('#items_invoice').DataTable( {
+"searching": false,
+"paging":   false,
+    "ordering": false,
+    "info":     false
+} );
+    var inventory = [];
+    var invoice =
+      {
+        "id" : <?= $new_Id_Invoice ?>,
+        "customer" : "",
+        "note" : "",
+        "total_items" : 0,
+        "total_qty" : 0 ,
+        "total_ammount" : 0
+      };
+
+      var t = $('#items_invoice').DataTable();
+$( "#group_items" ).change(function() {
+
+   var str = $(this).val();
+
+      $.ajax({
+ type: "GET",
+ url: "../Operations/GetItemsList.php",
+ data: {q:str },
+ success: function(data){
+   var ta = $('#items-table').DataTable({
+        "data": data,
+        "columns": [
+     { "data": 'id' },
+     { "data": 'name' },
+     { "data": 'total qty' },
+     { "data": '#' }
+ ]
+    });
+    console.log(data);
+    return true;
+ },
+ error: function(xhr, textStatus, errorThrown) {
+     $('#response').html( data );
+   console.log('ajax loading error...');
+   return false;
  }
-        });
-  $('#items_invoice').dataTable( {
-    "searching": false,
-    "paging":   false,
-        "ordering": false,
-        "info":     false
-  } );
-    var t = $('#items_invoice').DataTable();
-    $(document).ready(function() {
+ });
+
+});
+
 function check_items (id ,data)  {
   var find= false;
   for (var i = 0 ; i <= inventory.length-1 ; i++){
@@ -373,7 +366,7 @@ $("#total_items").val(invoice.total_items);
 $("#total_qty").val(invoice.total_qty);
 $("#total_ammount").val(invoice.total_ammount.toFixed(3));
 }
-$('#example-table tbody').on( 'click', '#addRow', function () {
+$('#items-table tbody').on( 'click', '#addRow', function () {
 //  $(this).closest('tr').addClass("color-view bg-info");
     var book_id= $(this).closest('tr').find('td:eq(0)').html();
     book_id = parseInt(book_id);
@@ -417,8 +410,6 @@ url: "../Operations/AddInvoice.php",
 dataType: "text",
 data: { invoice_data : JSON.stringify(invoice) , movment_inventory_invoce : JSON.stringify(inventory)  },
 success: function(data){
-
-
     $('#response').html( data );
    console.log(data);
    return true;

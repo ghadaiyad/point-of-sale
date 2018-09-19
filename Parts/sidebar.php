@@ -32,7 +32,7 @@
             </li>
 
             <li>
-                <a href="../Pages/Delete&EditBooks.php"><i class="sidebar-item-icon ti-trash"></i>
+                <a href="../Pages/Delete&EditItems.php"><i class="sidebar-item-icon ti-trash"></i>
                     <span class="nav-label">تعديل وحذف كتاب و قسم <span>
                 </a>
             </li>

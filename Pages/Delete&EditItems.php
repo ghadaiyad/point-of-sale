@@ -1,6 +1,6 @@
 
     <?php
-     include "../Operations/connect_libray.php";
+     include "../Operations/connect_DB.php";
      ///// delete group
 /// delete book
 $script="";
@@ -58,7 +58,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
      <head>
      <?php require_once('../Parts/head.html'); ?>
      </head>
-         <?php include "../Operations/connect_libray.php"; ?>
+
      <body class="fixed-navbar">
          <div class="page-wrapper">
              <!-- START HEADER-->
@@ -131,8 +131,8 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
                                                   <tbody>
 
                                                     <?php
-                              											$sql = "SELECT B.id ,B.name , B.author ,B.number_stamp ,B.cost_price, B.sale_price ,B.total_qty ,B.note , GB.name as nn
-                                                     FROM books B , group_books GB where  Gb.id = B.group_books_id";
+                              											$sql = "SELECT I.id ,I.name   ,I.cost_price, I.sale_price ,I.total_qty ,I.note , GI.name as nn
+                                                     FROM items I , group_items GI where  GI.id = I.group_items_id";
                                                      $result = $conn->query($sql);
                                                      if (!$result) {
                                             printf("Errormessage: %s\n", $mysqli->error);
@@ -143,9 +143,9 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
                               			<tr>
                                     <td><?= $row["id"]; ?></td>
                                       <td><?= $row["name"]; ?></td>
-                                      <td><?= $row["author"]; ?></td>
+                                      <td></td>
                                       <td><?= $row["nn"]; ?></td>
-                                      <td><?= $row["number_stamp"]; ?></td>
+                                      <td></td>
                                       <td><?= number_format($row["cost_price"],3); ?> $</td>
                                             	<td><?= number_format($row["sale_price"],3); ?> $</td>
                                                 <td><?= $row["note"]; ?></td>
@@ -203,7 +203,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 
                                                <?php
                                                $sql = "SELECT id , name , note
-                                                FROM group_books ";
+                                                FROM group_items ";
                                                 $result = $conn->query($sql);
                                                 if (!$result) {
                                        printf("Errormessage: %s\n", $mysqli->error);
@@ -436,7 +436,6 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
                 groupname: {
                     minlength: 3,
                     required: !0
-
                 }
             },
             errorClass: "help-block error",
