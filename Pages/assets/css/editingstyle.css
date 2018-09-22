@@ -9,8 +9,15 @@
     text-align: center;
   }
 .ibox {
+      font-weight: 700!important;
     direction: rtl;
 }
 th{
   text-align: right;
+}
+.table-wrapper-scroll-y {
+  display: block;
+  max-height: 200px;
+  overflow-y: auto;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
 }

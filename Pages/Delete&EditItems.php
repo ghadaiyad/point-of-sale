@@ -2,12 +2,12 @@
     <?php
      include "../Operations/connect_DB.php";
      ///// delete group
-/// delete book
+/// delete items
 $script="";
 if($_SERVER["REQUEST_METHOD"] == "GET"){
-  if (isset($_GET['BookIdDeleted'])) {
-  $book_id = $_GET["BookIdDeleted"];
-  $sql = "DELETE FROM books WHERE id =$book_id ";
+  if (isset($_GET['itemIdDeleted'])) {
+  $item_id = $_GET["itemIdDeleted"];
+  $sql = "DELETE FROM items WHERE id =$item_id ";
 
   if ($conn->query($sql) === TRUE) {
 
@@ -25,9 +25,9 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
   }
   }
 
-  if (isset($_GET['GroupBookIdDeleted'])) {
-    $group_book_id = $_GET["GroupBookIdDeleted"];
-    $sql = "DELETE FROM group_books WHERE id =$group_book_id ";
+  if (isset($_GET['GroupitemIdDeleted'])) {
+    $group_items_id = $_GET["GroupitemIdDeleted"];
+    $sql = "DELETE FROM group_items WHERE id =$group_items_id ";
     if ($conn->query($sql) === TRUE) {
       $script="
       $('.alert-success').removeClass( 'hidden' ).addClass( 'show' );
@@ -151,7 +151,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
                                                 <td><?= $row["note"]; ?></td>
                                       <td>
                     <button type="button" id="editbutton" class="btn btn-default btn-xs m-r-5" data-toggle="modal" data-target="#exampleModal" data-whatever=""><i class="fa fa-pencil font-14"></i></button>
-                                        <a href="?BookIdDeleted=<?= $row['id'];?>">
+                                        <a href="?itemIdDeleted=<?= $row['id'];?>">
                                           <button class="btn btn-default btn-xs" data-toggle="tooltip" data-original-title="Delete"><i class="fa fa-trash font-14"></i></button>
                                         </a>
                                       </td>
@@ -182,7 +182,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 
 
                                      <div class="ibox-body">
-                                         <table class="table table-striped table-bordered table-hover" id="GroupBook-table" cellspacing="0" width="100%">
+                                         <table class="table table-striped table-bordered table-hover" id="Groupitems-table" cellspacing="0" width="100%">
                                              <thead>
                                                  <tr>
                                                    <th>رقم المجموعة</th>
@@ -217,8 +217,8 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
                                  <td><?= $row["note"]; ?></td>
 
                                  <td>
-               <button type="button" id="editgroupbookbutton" class="btn btn-default btn-xs m-r-5" data-toggle="modal" data-target="#EditGroupModal" data-whatever=""><i class="fa fa-pencil font-14"></i></button>
-                                   <a href="?GroupBookIdDeleted=<?= $row['id'];?>">
+               <button type="button" id="editgroupitemsbutton" class="btn btn-default btn-xs m-r-5" data-toggle="modal" data-target="#EditGroupModal" data-whatever=""><i class="fa fa-pencil font-14"></i></button>
+                                   <a href="?GroupitemIdDeleted=<?= $row['id'];?>">
                                      <button class="btn btn-default btn-xs" data-toggle="tooltip" data-original-title="Delete"><i class="fa fa-trash font-14"></i></button>
                                    </a>
                                  </td>
@@ -237,7 +237,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 
                            </div>
 
-              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="text-align: -webkit-right;">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="text-align: -webkit-right;">
                             <div class="modal-dialog" role="document"style="direction: rtl;">
                             		    <div class="modal-content">
                             		      <div class="modal-header">
@@ -248,15 +248,15 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
                                           </button>
                             		      </div>
                             		      <div class="modal-body">
-                                        <form class="form-horizontal" id="form-updatabooks"  novalidate="novalidate">
-                                          <input type="hidden" name="book_id" id="book_id">
+                                        <form class="form-horizontal" id="form-updataitemss"  novalidate="novalidate">
+                                          <input type="hidden" name="items_id" id="items_id">
                                           <div class="form-group row">
                                               <label class="col-sm-2 col-form-label">القسم او المجموعة</label>
                                               <div class="col-sm-10">
-                                              <select class="form-control" name="group_books" id="group_books">
+                                              <select class="form-control" name="group_itemss" id="group_itemss">
                                                   <optgroup label="الكتب">
                                                     <?php
-                                                    $sql = "SELECT * FROM group_books";
+                                                    $sql = "SELECT * FROM group_itemss";
                                               $result = $conn->query($sql);
 
                                               if ($result->num_rows > 0) {
@@ -339,9 +339,6 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
                             					</div>
                                  </div>
                                </div>
-
-
-
        <div class="modal fade" id="EditGroupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="text-align: -webkit-right;">
                            <div class="modal-dialog" role="document"style="direction: rtl;">
                                   <div class="modal-content">
@@ -353,8 +350,8 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
                                          </button>
                                     </div>
                                     <div class="modal-body">
-                                       <form class="form-horizontal" id="form-updatagroupbooks"  novalidate="novalidate">
-                                         <input type="hidden" name="Group_book_id" id="Group_book_id">
+                                       <form class="form-horizontal" id="form-updatagroupitemss"  novalidate="novalidate">
+                                         <input type="hidden" name="Group_items_id" id="Group_items_id">
 
 
                                            <div class="form-group row">
@@ -403,7 +400,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
     <!-- PAGE LEVEL SCRIPTS-->
     <script type="text/javascript">
     <?= $script ?>
-        $('#GroupBook-table').DataTable({
+        $('#Groupitems-table').DataTable({
           pageLength: 20,
           "language": {
     "search": "بحث عن مجموعة",
@@ -416,22 +413,22 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 
         });
 
-    var table = $('#GroupBook-table').DataTable();
+    var table = $('#Groupitems-table').DataTable();
 
-    $('#GroupBook-table tbody').on( 'click', '#editgroupbookbutton', function () {
+    $('#Groupitems-table tbody').on( 'click', '#editgroupitemsbutton', function () {
     var group_id = $(this).closest('tr').find('td:eq(0)').html();
     var group_name = $(this).closest('tr').find('td:eq(1)').html();
     var group_note = $(this).closest('tr').find('td:eq(2)').html();
 
       $("#EditGroupModal-label").html("تعديل مجموعة رقم :"+group_id);
-    $("input[name=Group_book_id]").val(group_id);
+    $("input[name=Group_items_id]").val(group_id);
     $("input[name=groupname]").val(group_name);
     $("input[name=groupnote]").val(group_note);
     } );
         </script>
 
         <script type="text/javascript">
-        $("#form-updatagroupbooks").validate({
+        $("#form-updatagroupitemss").validate({
             rules: {
                 groupname: {
                     minlength: 3,
@@ -446,7 +443,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
                 $(e).closest(".form-group.row").removeClass("has-error")
             }
         });
-         $("#form-updatagroupbooks").on("submit", function (event) {
+         $("#form-updatagroupitemss").on("submit", function (event) {
     if (event.isDefaultPrevented()) {
        // handle the invalid form...
     } else {
@@ -454,7 +451,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
        event.preventDefault();
        $.ajax({
            type: 'POST',
-           url: '../Operations/updatagroupbooks.php',
+           url: '../Operations/updatagroupitemss.php',
            data: $(this).serialize()
        })
        .done(function(data){
@@ -465,7 +462,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
         $(".alert-success").slideUp(500);
     });
 
-    $("#form-updatabooks")[0].reset();
+    $("#form-updataitemss")[0].reset();
     document.location.reload(true);
        })
        .fail(function() {
@@ -498,21 +495,21 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 var table = $('#example-table').DataTable();
 
 $('#example-table tbody').on( 'click', '#editbutton', function () {
-var book_id = $(this).closest('tr').find('td:eq(0)').html();
-$("#exampleModalLabel").html("تعديل كتب رقم : "+book_id);
-var book_name = $(this).closest('tr').find('td:eq(1)').html();
+var items_id = $(this).closest('tr').find('td:eq(0)').html();
+$("#exampleModalLabel").html("تعديل كتب رقم : "+items_id);
+var items_name = $(this).closest('tr').find('td:eq(1)').html();
 var author = $(this).closest('tr').find('td:eq(2)').html();
-var group_books = $(this).closest('tr').find('td:eq(3)').html();
+var group_itemss = $(this).closest('tr').find('td:eq(3)').html();
 var number_stamp = $(this).closest('tr').find('td:eq(4)').html();
 var cost_price = $(this).closest('tr').find('td:eq(5)').html();
 cost_price = parseInt(cost_price);
 var sale_price = $(this).closest('tr').find('td:eq(6)').html();
 sale_price =parseInt(sale_price);
 var note = $(this).closest('tr').find('td:eq(7)').html();
-$("input[name=book_id]").val(book_id);
-$("input[name=name]").val(book_name);
+$("input[name=items_id]").val(items_id);
+$("input[name=name]").val(items_name);
 $("input[name=author]").val(author);
-$("input[name=group_books]").val(group_books);
+$("input[name=group_itemss]").val(group_itemss);
 $("input[name=number_stamp]").val(number_stamp);
 $("input[name=cost_price]").val(cost_price);
 $("input[name=sale_price]").val(sale_price);
@@ -520,7 +517,7 @@ $("input[name=note]").val(note);
 } );
     </script>
     <script type="text/javascript">
-    $("#form-updatabooks").validate({
+    $("#form-updataitemss").validate({
         rules: {
           totalqty: {
 
@@ -553,7 +550,7 @@ $("input[name=note]").val(note);
             $(e).closest(".form-group.row").removeClass("has-error")
         }
     });
-     $("#form-updatabooks").on("submit", function (event) {
+     $("#form-updataitemss").on("submit", function (event) {
 if (event.isDefaultPrevented()) {
    // handle the invalid form...
 } else {
@@ -561,7 +558,7 @@ if (event.isDefaultPrevented()) {
    event.preventDefault();
    $.ajax({
        type: 'POST',
-       url: '../Operations/updatabooks.php',
+       url: '../Operations/updataitemss.php',
        data: $(this).serialize()
    })
    .done(function(data){
@@ -572,7 +569,7 @@ $(".alert-success").fadeTo(2000, 500).slideUp(500, function(){
     $(".alert-success").slideUp(500);
 });
 
-$("#form-updatabooks")[0].reset();
+$("#form-updataitemss")[0].reset();
 document.location.reload(true);
    })
    .fail(function() {

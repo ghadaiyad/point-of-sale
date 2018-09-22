@@ -4,9 +4,9 @@ session_start();
 if(isset($_GET["q"]))
 {
     include "../Operations/connect_DB.php";
-  $groupid = $_GET["q"];
-  $stmt = $conn->prepare("SELECT id ,name ,total_qty FROM items  where  group_items_id = ? ");
-  $stmt->bind_param("s", $groupid);
+  $itemid = $_GET["q"];
+  $stmt = $conn->prepare("SELECT * FROM items  where  id = ? ");
+  $stmt->bind_param("s", $itemid);
   $stmt->execute();
   $result = $stmt->get_result();
   $outp = $result->fetch_all(MYSQLI_ASSOC);
