@@ -87,7 +87,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
                      </ol>
                  </div>
                  <div class="page-content fade-in-up" id="response">
-                                     </div>
+                  </div>
                    <div class="row">
                                          <div class="col-md-12">
 

@@ -10,9 +10,38 @@ if (!isset($_SESSION['user_ID'])){
 
 <head>
 <?php require_once('../Parts/head.html'); ?>
+
+<style type="text/css">
+.form-group{
+margin-bottom: 15px;
+margin-top: 15px;
+}
+.image-preview-input {
+    position: relative;
+  overflow: hidden;
+  margin: 0px;
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+.image-preview-input input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.image-preview-input-title {
+    margin-left:2px;
+}
+</style>
 </head>
     <?php include "../Operations/connect_DB.php";
-    $sql = "SELECT MAX(id) as new_Id_Invoice FROM sales_invoice";
+    $sql = "SELECT MAX(id) as new_Id_Invoice FROM purchases_invoice";
   $result = $conn->query($sql);
   if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -50,7 +79,56 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
                 </ol>
             </div>
             <div class="page-content fade-in-up" id="response">
-              <div class="col-4"></div>
+                  </div>
+                      <div class="row">
+              <div class="col-4">
+                  <div class="ibox">
+
+                      <div class="ibox-body">
+                        <div class="form-group row">
+                          <label class="col-2 col-form-label">المجموع الاجمالي : </label>
+                        <div class="col-4">
+                          <div class="input-group">
+                              <input class="form-control" type="text" id="total_discount_ammount" name="total_discount_ammount" readonly>
+                                <div class="input-group-addon bg-white">$</div>
+                              </div>
+                        </div>
+                        <label class="col-2 col-form-label">الضريبة المبيعات</label>
+                      <div class="col-4">
+                        <div class="input-group">
+                            <input class="form-control" value=0 type="text" id="rate_ammount" name="rate_ammount" readonly>
+                              <div class="input-group-addon bg-white">$</div>
+                            </div>
+                      </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label">ملاحظات :  </label>
+                            <div class="col-10">
+                                <input class="form-control" type="text" id="invoice_note" name="invoice_note">
+                            </div>
+                        </div>
+                        <div class="form-group col-12">
+                            <!-- image-preview-filename input [CUT FROM HERE]-->
+                            <div class="input-group image-preview">
+                                <input type="text" class="form-control image-preview-filename" disabled="disabled"> <!-- don't give a name === doesn't send on POST/GET -->
+                                <span class="input-group-btn">
+                                    <!-- image-preview-clear button -->
+                                    <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
+                                        <span class="glyphicon glyphicon-remove"></span> مسح
+                                    </button>
+                                    <!-- image-preview-input -->
+                                    <div class="btn btn-default image-preview-input">
+                                        <span class="glyphicon glyphicon-folder-open"></span>
+                                        <span class="image-preview-input-title">صورة</span>
+                                        <input  type="file"  accept="image/png, image/jpeg, image/gif" name="img_blog" id="img_blog" /> <!-- rename it -->
+                                    </div>
+                                </span>
+                            </div><!-- /input-group image-preview [TO HERE]-->
+                        </div>
+                        </div>
+              </div>
+                </div>
               <div class="col-8">
                 <div class="ibox ibox-primary">
                           <div class="ibox-head">
@@ -58,8 +136,8 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
                           </div>
                     <div class="ibox-body">
                       <div class="form-group row">
-                          <label class="col-2 col-form-label">المورد</label>
-                          <div class="col-4">
+                          <label class="col-1 col-form-label">المورد</label>
+                          <div class="col-3">
                           <select class="form-control select2_demo_1" name="tid" id="tid" >
                                 <?php
                                 $sql = "SELECT * FROM t_accounts";
@@ -81,26 +159,37 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
                           ?>
                           </select>
                         </div>
-                        <label class="col-2 col-form-label">طريقة الدفع</label>
-                                            <div class="col-2">
-                                                                <label class="ui-radio ui-radio-inline">
-                                                                    <input type="radio" value="0" name="payment_method" id="payment_method" checked>
-                                                                    <span class="input-span"></span>ذمم (اجل)</label>
-                                                                <label class="ui-radio ui-radio-inline">
-                                                                    <input type="radio" value="1" name="payment_method" id="payment_method" >
-                                                                    <span class="input-span"></span>نقدي (كاش)</label>
-                                                              </div>
+                        <label class="col-form-label">طريقة الدفع</label>
+                  <div class="col-4">
+                    <div class="col-4 m-b-20">
+                        <div class="check-list">
+                            <label class="ui-radio ui-radio-info">
+                                <input type="radio" name="payment_method"  value="0" checked>
+                                <span class="input-span"></span>ذمم (اجل)</label>
+                            <label class="ui-radio ui-radio-danger">
+                                <input type="radio" name="payment_method" value="1">
+                                <span class="input-span"></span>نقدي (كاش)</label>
+                        </div>
+                    </div>
+
+                    </div>
+                <label class="col-1 col-form-label">قيمة الخصم </label>
+                <div class="col-2">
+                  <div class="input-group">
+                      <input class="form-control" type="text" id="discount" name="discount" value="0">
+                        <div class="input-group-addon bg-white">$</div>
+                      </div>
+                </div>
                       </div>
                       <div class="form-group row">
-                          <label class="col-2 col-form-label">فاتورة رقم :</label>
-                              <div class="col-4">
+                          <label class="col-1 col-form-label">فاتورة رقم :</label>
+                              <div class="col-3">
 <input class="form-control" type="text" placeholder="رقم فاتورة المورد ">
                       </div>
 
 
-                      <label class="col-2 col-form-label">الضريبة</label>
-                    <div class="col-2">
-
+                      <label class="col-form-label">الضريبة</label>
+                    <div class="col-4">
                                         <label class="ui-radio ui-radio-inline">
                                             <input type="radio" value="0" name="rate" id="rate"  checked>
                                             <span class="input-span"></span>بدون ضريبة</label>
@@ -108,17 +197,22 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
                                                 <input type="radio" value="1" name="rate" id="rate">
                                                 <span class="input-span"></span>مع ضريبة</label>
                                       </div>
+
+
+                        <div class="col-3 ml-auto">
+                            <button id="submit" class="btn btn-info btn-block" type="submit">ترحيل</button>
+                        </div>
+
                     </div>
                 </div>
                   </div>
 </div>
-
+      </div>
                                 <div class="row">
-                                  <div class="col-5">
+                                  <div class="col-6">
                                     <div class="ibox ibox-primary">
                                         <div class="ibox-body">
                                           <table class="table table-hover table-responsive"  id="items_invoice" cellspacing="0" width="100%" >
-                                                          <caption>Optional table caption.</caption>
                                                           <thead>
                                                               <tr>
                                                                   <th>رقم الصنف</th>
@@ -132,15 +226,33 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
                                                           <tbody>
                                                           </tbody>
                                                       </table>
+                            <hr>
+                                                      <div class="form-group row">
+                                                        <label class="col-1 col-form-label">المجموع</label>
+                                                      <div class="col-3">
+                                                        <div class="input-group">
+
+                                                            <input class="form-control" type="text" id="total_ammount" name="total_ammount" readonly>
+                                                            <div class="input-group-addon bg-white">$</div>
+                                                            </div>
+                                                      </div>
+                                                          <label class="col-2 col-form-label">عدد الاصناف</label>
+                                                          <div class="col-2">
+                                                              <input class="form-control" type="text" id ="total_items" name="total_items" readonly>
+                                                          </div>
+                                                          <label class="col-2 col-form-label">العدد الكلي</label>
+                                                          <div class="col-2">
+                                                              <input class="form-control" type="text" id="total_qty" name="total_qty" readonly>
+                                                          </div>
+                                                      </div>
                                         </div>
                                     </div>
                                       </div>
-                                  <div class="col-7">
+                                  <div class="col-6">
                                     <div class="ibox ibox-success">
                                               <div class="ibox-head">
-                                                    <div class=" row">
-                                                        <label class="col-3 col-form-label">القسم او المجموعة</label>
-                                                        <div class="col-8">
+                                                        <label class="col-5 col-form-label">القسم او المجموعة</label>
+
                                                         <select class="form-control select2_demo_1" name="group_items" id="group_items" >
                                                               <?php
                                                               $sql = "SELECT * FROM group_items";
@@ -161,9 +273,6 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
                                                         }
                                                         ?>
                                                         </select>
-                                                      </div>
-
-                                                  </div>
                                               </div>
                                         <div class="ibox-body">
                                           <div class="table-wrapper-scroll-y">
@@ -185,78 +294,6 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
                                     </div>
                                       </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-10">
-                                      <div class="ibox ibox-grey">
-
-                                          <div class="ibox-body">
-                                            <form class="form-horizontal" id="form-invoice">
-
-                                                <div class="form-group row">
-                                                      <label class="col-1 col-form-label">المجموع</label>
-                                                    <div class="col-2">
-                                                      <div class="input-group">
-                                                          <div class="input-group-addon bg-white">$</div>
-                                                          <input class="form-control" type="text" id="total_ammount" name="total_ammount" readonly>
-                                                          <div class="input-group-addon bg-white">.00</div>
-                                                          </div>
-                                                    </div>
-                                                    <label class="col-1 col-form-label">قيمة الخصم </label>
-                                                  <div class="col-2">
-                                                    <div class="input-group">
-                                                        <div class="input-group-addon bg-white">$</div>
-                                                        <input class="form-control" type="text" id="discount" name="discount" value="0">
-                                                        <div class="input-group-addon bg-white">.00</div>
-                                                        </div>
-                                                  </div>
-                                                  <label class="col-1 col-form-label">المجموع الاجمالي : </label>
-                                                <div class="col-2">
-                                                  <div class="input-group">
-                                                      <div class="input-group-addon bg-white">$</div>
-                                                      <input class="form-control" type="text" id="total_ammount" name="total_ammount" readonly>
-                                                      <div class="input-group-addon bg-white">.00</div>
-                                                      </div>
-                                                </div>
-                                                <label class="col-1 col-form-label">مجموع الضريبة المبيعات</label>
-                                              <div class="col-2">
-                                                <div class="input-group">
-                                                    <div class="input-group-addon bg-white">$</div>
-                                                    <input class="form-control" type="text" id="total_ammount" name="total_ammount" readonly>
-                                                    <div class="input-group-addon bg-white">.00</div>
-                                                    </div>
-                                              </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-2 col-form-label">عدد الاصناف</label>
-                                                    <div class="col-3">
-                                                        <input class="form-control" type="text" id ="total_items" name="total_items" readonly>
-                                                    </div>
-                                                    <label class="col-4 col-form-label">العدد الكلي</label>
-                                                    <div class="col-3">
-                                                        <input class="form-control" type="text" id="total_qty" name="total_qty" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-2 col-form-label">ملاحظات :  </label>
-                                                    <div class="col-7">
-                                                        <input class="form-control" type="text" id="invoice_note" name="invoice_note">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-                                                    <div class="col-12 ml-auto">
-                                                        <button class="btn btn-info btn-block" type="submit">ترحيل</button>
-                                                    </div>
-                                                </div>
-
-                                            </form>
-
-                                          </div>
-                                      </div>
-                                        </div>
-
-                                </div>
-
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="direction : rtl;">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -298,6 +335,7 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
   <?php require_once('../Parts/script.html'); ?>
     <!-- PAGE LEVEL SCRIPTS-->
     <script type="text/javascript">
+var total_discount_ammount;
     var purchase_invoice =
       {
         "id" :<?= $new_Id_Invoice ?>,
@@ -359,18 +397,59 @@ $('#items-table tbody').on( 'click', '#addRow', function () {
 });
 $('#items_invoice tbody').on( 'click', '#deleteRow', function () {
   var index = t.row( $(this).parents('tr')).index();
-  purchase_invoice.total_qty -=purchase_invoice.inventory[index].qty;
-  purchase_invoice.total_items--;
-  purchase_invoice.total_ammount -= purchase_invoice.inventory[index].amount;
+purchase_invoice.total_qty -=purchase_invoice.inventory[index].qty;
+purchase_invoice.total_items--;
+purchase_invoice.total_ammount -= purchase_invoice.inventory[index].amount;
+purchase_invoice.inventory.splice(index, 1);
+t.row( $(this).parents('tr') ).remove().draw();
+setvalueinput();
+});
+$( "#discount" ).keyup(function() {
+  if($(this).val()=="") $(this).val(0)
+setvalueinput();
+});
+$('#items_invoice tbody').on( 'change', '#items_price', function () {
+  if($(this).val()=="") $(this).val(purchase_invoice.inventory[index].cost_price.toFixed(3))
+      var index = t.row( $(this).parents('tr')).index();
+  purchase_invoice.inventory[index].cost_price = parseInt($(this).val());
+  purchase_invoice.inventory[index].amount = purchase_invoice.inventory[index].cost_price * purchase_invoice.inventory[index].qty ;
+    t.row(index).data([
+           purchase_invoice.inventory[index].id,
+          purchase_invoice.inventory[index].name,
+        purchase_invoice.inventory[index].qty,
+          "<input class='col-6 form-control' value='"+purchase_invoice.inventory[index].cost_price.toFixed(3)+"' type='text' id='items_price' name='items_price'>",
+          "$"+purchase_invoice.inventory[index].amount.toFixed(3),
+          '<button type="button" class="btn btn-danger" id="deleteRow" ><span class="ti-close"></span></button>'
+    ]);
+    if($(this).val()=="") $(this).val(purchase_invoice.inventory[index].cost_price.toFixed(3))
+  setvalueinput();
+});
+function calucuatinvoice(){
+  purchase_invoice.payment_method= parseInt($("input[name='payment_method']").val());
+  purchase_invoice.rate=parseInt($("input[name='rate']").val());
+  alert(purchase_invoice.payment_method);
+purchase_invoice.t_account_id= $("#tid").val();
+purchase_invoice.note= $("#invoice_note").val();
+  purchase_invoice.total_ammount= 0;
+    purchase_invoice.total_qty= 0;
+    purchase_invoice.total_items = 0;
+    for (var i = 0 ; i <= purchase_invoice.inventory.length-1 ; i++){
+          purchase_invoice.total_qty = purchase_invoice.inventory[i].qty;
+    purchase_invoice.inventory[i].amount = purchase_invoice.inventory[i].cost_price * purchase_invoice.inventory[i].qty;
+    purchase_invoice.total_ammount += purchase_invoice.inventory[i].amount;
+    purchase_invoice.total_items ++;
+    }
+      purchase_invoice.discount = parseInt($("#discount").val());
+     total_discount_ammount = purchase_invoice.total_ammount - purchase_invoice.discount;
+}
+function setvalueinput(){
+  calucuatinvoice();
   $("#total_items").val(purchase_invoice.total_items.toFixed(3));
   $("#total_qty").val(purchase_invoice.total_qty);
   $("#total_ammount").val(purchase_invoice.total_ammount.toFixed(3));
-purchase_invoice.inventory.splice(index, 1);
-t.row( $(this).parents('tr') ).remove().draw();
-});
-
+  $("#total_discount_ammount").val(total_discount_ammount.toFixed(3));
+}
 function check_items (id)  {
-//  alert(id);
   var find= false;
   for (var i = 0 ; i <= purchase_invoice.inventory.length-1 ; i++){
   if (purchase_invoice.inventory[i].id == id){
@@ -379,11 +458,12 @@ purchase_invoice.inventory[i].qty++;
 purchase_invoice.total_qty++;
 purchase_invoice.inventory[i].amount = purchase_invoice.inventory[i].cost_price * purchase_invoice.inventory[i].qty ;
 purchase_invoice.total_ammount +=purchase_invoice.inventory[i].cost_price;
+setvalueinput();
  t.row(i).data([
         purchase_invoice.inventory[i].id,
        purchase_invoice.inventory[i].name,
      purchase_invoice.inventory[i].qty,
-       "$"+purchase_invoice.inventory[i].cost_price.toFixed(3),
+       "<input class='col-6 form-control' value='"+purchase_invoice.inventory[i].cost_price.toFixed(3)+"' type='text' id='items_price' name='items_price'>",
        "$"+purchase_invoice.inventory[i].amount.toFixed(3),
        '<button type="button" class="btn btn-danger" id="deleteRow" ><span class="ti-close"></span></button>'
  ]);
@@ -409,36 +489,26 @@ if(!find){
          json.id,
          json.name,
           1,
-         "$"+json.cost_price.toFixed(3),
+        "<input class='col-6 form-control' value='"+json.cost_price.toFixed(3)+"' type='text' id='items_price' name='items_price'>",
          "$"+json.cost_price.toFixed(3),
          '<button type="button" class="btn btn-danger" id="deleteRow" ><span class="ti-close"></span></button>'
       ]).draw(false);
       purchase_invoice.total_ammount += json.cost_price;
   purchase_invoice.total_items++;
   purchase_invoice.total_qty++;
-  $("#total_items").val(purchase_invoice.total_items.toFixed(3));
-  $("#total_qty").val(purchase_invoice.total_qty);
-  $("#total_ammount").val(purchase_invoice.total_ammount.toFixed(3));
+setvalueinput();
         });
-
-}
-$("#total_items").val(purchase_invoice.total_items.toFixed(3));
-$("#total_qty").val(purchase_invoice.total_qty);
-$("#total_ammount").val(purchase_invoice.total_ammount.toFixed(3));
 }
 
+}
 });
     </script>
       <script type="text/javascript">
     $(document).ready(function() {
-       $("#form-invoice").on("submit", function (event) {
-         $("#ammount_cach").html("$"+purchase_invoice.total_ammount.toFixed(3));
+       $("#submit").on("click", function (event) {
+         $("#ammount_cach").html("$"+total_discount_ammount.toFixed(3));
          $('#exampleModalCenter').modal('show');
-        purchase_invoice.payment_method= $("#payment_method").val();
-        purchase_invoice.rate= $("#rate").val();
-        purchase_invoice.discount= $("#discount").val();
-    purchase_invoice.t_account_id= $("#tid").val();
-    purchase_invoice.note= $("#invoice_note").val();
+
   if (event.isDefaultPrevented()) {
      // handle the invalid form...
   } else {
@@ -466,7 +536,66 @@ document.location.reload(true);
    });
   }
   });
+    });
+    </script>
+    <script type="text/javascript">
+    $(document).on('click', '#close-preview', function(){
+        $('.image-preview').popover('hide');
+        // Hover befor close the preview
+        $('.image-preview').hover(
+            function () {
+               $('.image-preview').popover('show');
+            },
+             function () {
+               $('.image-preview').popover('hide');
+            }
+        );
+    });
 
+    $(function() {
+        // Create the close button
+        var closebtn = $('<button/>', {
+            type:"button",
+            text: 'x',
+            id: 'close-preview',
+            style: 'font-size: initial;',
+        });
+        closebtn.attr("class","close pull-right");
+        // Set the popover default content
+        $('.image-preview').popover({
+            trigger:'manual',
+            html:true,
+            title: "<strong>Preview</strong>"+$(closebtn)[0].outerHTML,
+            content: "There's no image",
+            placement:'bottom'
+        });
+        // Clear event
+        $('.image-preview-clear').click(function(){
+            $('.image-preview').attr("data-content","").popover('hide');
+            $('.image-preview-filename').val("");
+            $('.image-preview-clear').hide();
+            $('.image-preview-input input:file').val("");
+            $(".image-preview-input-title").text("Browse");
+        });
+        // Create the preview image
+        $(".image-preview-input input:file").change(function (){
+            var img = $('<img/>', {
+                id: 'dynamic',
+                width:250,
+                height:200
+            });
+            var file = this.files[0];
+            var reader = new FileReader();
+            // Set preview image into the popover data-content
+            reader.onload = function (e) {
+                $(".image-preview-input-title").text("Change");
+                $(".image-preview-clear").show();
+                $(".image-preview-filename").val(file.name);
+                img.attr('src', e.target.result);
+                $(".image-preview").attr("data-content",$(img)[0].outerHTML).popover("show");
+            }
+            reader.readAsDataURL(file);
+        });
     });
     </script>
 </body>
