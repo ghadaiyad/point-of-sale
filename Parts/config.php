@@ -1,4 +1,4 @@
-<div class="theme-config">
+<!--  <div class="theme-config">
     <div class="theme-config-toggle"><i class="fa fa-cog theme-config-show"></i><i class="ti-close theme-config-close"></i></div>
     <div class="theme-config-box">
         <div class="text-center font-18 m-b-20">SETTINGS</div>
@@ -126,3 +126,4 @@
         </div>
     </div>
 </div>
+-->

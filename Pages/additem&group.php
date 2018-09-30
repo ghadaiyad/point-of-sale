@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_ID'])){
 <head>
 <?php require_once('../Parts/head.html'); ?>
 </head>
-    <?php include "../Operations/connect_libray.php"; ?>
+    <?php include "../Operations/connect_DB.php"; ?>
 <body class="fixed-navbar">
     <div class="page-wrapper">
         <!-- START HEADER-->
@@ -46,7 +46,7 @@ if (!isset($_SESSION['user_ID'])){
 
                                       <div class="ibox">
                                           <div class="ibox-head">
-                                              <div class="ibox-title">تعريف كتاب جديد</div>
+                                              <div class="ibox-title">معلومات الصنف</div>
                                             <div class="ibox-tools">
                                                 <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
                                             </div>
@@ -54,12 +54,11 @@ if (!isset($_SESSION['user_ID'])){
                                           <div class="ibox-body" >
                                               <form class="form-horizontal" id="form-addbook"  novalidate="novalidate">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label">القسم او المجموعة</label>
+                                                    <label class="col-sm-2 col-form-label">المجموعة </label>
                                                     <div class="col-sm-6">
-                                                    <select class="form-control select2_demo_1" name="group_books" id="group_books">
-                                                        <optgroup label="الكتب">
+                                                    <select class="form-control select2_demo_1" name="group_items" id="group_items">
                                                           <?php
-                                                          $sql = "SELECT * FROM group_books";
+                                                          $sql = "SELECT * FROM group_items";
                                                     $result = $conn->query($sql);
 
                                                     if ($result->num_rows > 0) {
@@ -76,15 +75,12 @@ if (!isset($_SESSION['user_ID'])){
                                                     echo "لا يوجد شيئ لعرض ........ <i class='mdi mdi-heart text-red'></i>";
                                                     }
                                                     ?>
-
-                                                        </optgroup>
-
                                                     </select>
                                                   </div>
                                                 </div>
 
                                                   <div class="form-group row">
-                                                      <label class="col-sm-2 col-form-label"> الاسم الكتاب : </label>
+                                                      <label class="col-sm-2 col-form-label"> الاسم الصنف : </label>
                                                       <div class="col-sm-9">
                                                           <input class="form-control" type="text" name="name">
                                                       </div>
@@ -155,7 +151,7 @@ if (!isset($_SESSION['user_ID'])){
                                       <div class="ibox">
 
                                                 <div class="ibox-head">
-                                                    <div class="ibox-title">تعريف قسم جديد</div>
+                                                    <div class="ibox-title">معلومات المجموعة</div>
                                                   <div class="ibox-tools">
                                                       <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
                                                       <a class="fullscreen-link"><i class="fa fa-expand"></i></a>
@@ -166,7 +162,7 @@ if (!isset($_SESSION['user_ID'])){
 
 
                                                   <div class="form-group row">
-                                                      <label class="col-sm-2 col-form-label"> اسم القسم </label>
+                                                      <label class="col-sm-2 col-form-label"> اسم المجموعة </label>
                                                       <div class="col-sm-9">
                                                           <input class="form-control" type="text" name="name_Group">
                                                       </div>

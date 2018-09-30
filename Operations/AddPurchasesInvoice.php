@@ -10,18 +10,20 @@ header('Content-Type: text/plain');
    echo $invoice_data->t_account_id;
    $inventory_data = $invoice_data->inventory;
  $sql = "INSERT INTO purchases_invoice
- (total_ammount, total_qty, rate, payment_method, discount, posting_datatime, total_items, note,t_account_id, img  )
+ (total_ammount, total_qty, rate, payment_method, discount,purchases_date ,  posting_datatime, total_items, note,t_account_id, img ,User_id )
   VALUES (
     $invoice_data->total_ammount,
     $invoice_data->total_qty,
     $invoice_data->rate,
     $invoice_data->payment_method,
     $invoice_data->discount,
+    '$invoice_data->purchase_date',
     '$time_log',
     $invoice_data->total_items,
     '$invoice_data->note',
     $invoice_data->t_account_id,
-    '$invoice_data->img'
+    '$invoice_data->img',
+    $id_user
 
   )";
 $note ="فاتورة رقم : ".$invoice_data->id;

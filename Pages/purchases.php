@@ -10,7 +10,6 @@ if (!isset($_SESSION['user_ID'])){
 
 <head>
 <?php require_once('../Parts/head.html'); ?>
-
 <style type="text/css">
 .form-group{
 margin-bottom: 15px;
@@ -138,7 +137,8 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
                       <div class="form-group row">
                           <label class="col-1 col-form-label">المورد</label>
                           <div class="col-3">
-                          <select class="form-control select2_demo_1" name="tid" id="tid" >
+                          <select class="form-control select2_demo_2" name="tid" id="tid" >
+                              <option>اسم العميل</option>
                                 <?php
                                 $sql = "SELECT * FROM t_accounts";
                           $result = $conn->query($sql);
@@ -160,19 +160,19 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
                           </select>
                         </div>
                         <label class="col-form-label">طريقة الدفع</label>
-                  <div class="col-4">
-                    <div class="col-4 m-b-20">
-                        <div class="check-list">
-                            <label class="ui-radio ui-radio-info">
-                                <input type="radio" name="payment_method"  value="0" checked>
-                                <span class="input-span"></span>ذمم (اجل)</label>
-                            <label class="ui-radio ui-radio-danger">
-                                <input type="radio" name="payment_method" value="1">
-                                <span class="input-span"></span>نقدي (كاش)</label>
-                        </div>
+                  <div class="col-2">
+                        <select class="form-control input-sm" id="payment_method" name="payment_method">
+                            <option value ="0">ذمم </option>
+                            <option value ="1">نقدي </option>
+                        </select>
                     </div>
-
-                    </div>
+                    <label class="col-form-label">الضريبة</label>
+                    <div class="col-2">
+                        <select class="form-control input-sm" id="rate" name="rate">
+                              <option value ="0">بدون ضريبة </option>
+                              <option value ="1">مع ضريبة </option>
+                          </select>
+                      </div>
                 <label class="col-1 col-form-label">قيمة الخصم </label>
                 <div class="col-2">
                   <div class="input-group">
@@ -184,25 +184,18 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
                       <div class="form-group row">
                           <label class="col-1 col-form-label">فاتورة رقم :</label>
                               <div class="col-3">
-<input class="form-control" type="text" placeholder="رقم فاتورة المورد ">
+                                <input class="form-control" type="text" placeholder="رقم فاتورة المورد ">
                       </div>
-
-
-                      <label class="col-form-label">الضريبة</label>
-                    <div class="col-4">
-                                        <label class="ui-radio ui-radio-inline">
-                                            <input type="radio" value="0" name="rate" id="rate"  checked>
-                                            <span class="input-span"></span>بدون ضريبة</label>
-                                            <label class="ui-radio ui-radio-inline">
-                                                <input type="radio" value="1" name="rate" id="rate">
-                                                <span class="input-span"></span>مع ضريبة</label>
-                                      </div>
-
-
+                      <div class="col-3" id="date_1">
+                          <label class="col-form-label">تاريخ</label>
+                          <div class="input-group date" >
+                              <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
+                              <input class="form-control" type="text" data-provide="datepicker" id="purchase_date" name="purchase_date" value="<?=date("Y-m-d ");?>">
+                          </div>
+                      </div>
                         <div class="col-3 ml-auto">
                             <button id="submit" class="btn btn-info btn-block" type="submit">ترحيل</button>
                         </div>
-
                     </div>
                 </div>
                   </div>
@@ -226,7 +219,7 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
                                                           <tbody>
                                                           </tbody>
                                                       </table>
-                            <hr>
+                                                                                                                                                                                                            <hr>
                                                       <div class="form-group row">
                                                         <label class="col-1 col-form-label">المجموع</label>
                                                       <div class="col-3">
@@ -253,7 +246,8 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
                                               <div class="ibox-head">
                                                         <label class="col-5 col-form-label">القسم او المجموعة</label>
 
-                                                        <select class="form-control select2_demo_1" name="group_items" id="group_items" >
+                                                        <select class="form-control select2_demo_2" name="group_items" id="group_items" >
+                                                            <option>المجموعة</option>
                                                               <?php
                                                               $sql = "SELECT * FROM group_items";
                                                         $result = $conn->query($sql);
@@ -348,9 +342,13 @@ var total_discount_ammount;
         "discount" :0,
         "note" :"",
         "img" :"",
-        "inventory" : []
+        "inventory" : [],
+        "purchase_date" :""
       };
   $(document).ready(function() {
+    $('#purchase_date').datepicker({
+    format: 'yyyy-mm-dd'
+});
     $('#items-table').dataTable({
       "paging":   false,
    "ordering": false,
@@ -411,7 +409,7 @@ setvalueinput();
 $('#items_invoice tbody').on( 'change', '#items_price', function () {
   if($(this).val()=="") $(this).val(purchase_invoice.inventory[index].cost_price.toFixed(3))
       var index = t.row( $(this).parents('tr')).index();
-  purchase_invoice.inventory[index].cost_price = parseInt($(this).val());
+  purchase_invoice.inventory[index].cost_price =parseFloat($(this).val());
   purchase_invoice.inventory[index].amount = purchase_invoice.inventory[index].cost_price * purchase_invoice.inventory[index].qty ;
     t.row(index).data([
            purchase_invoice.inventory[index].id,
@@ -425,9 +423,9 @@ $('#items_invoice tbody').on( 'change', '#items_price', function () {
   setvalueinput();
 });
 function calucuatinvoice(){
-  purchase_invoice.payment_method= parseInt($("input[name='payment_method']").val());
-  purchase_invoice.rate=parseInt($("input[name='rate']").val());
-  alert(purchase_invoice.payment_method);
+  purchase_invoice.payment_method= parseInt($("#payment_method").val());
+  purchase_invoice.rate=parseInt($("#rate").val());
+  //alert(purchase_invoice.payment_method);
 purchase_invoice.t_account_id= $("#tid").val();
 purchase_invoice.note= $("#invoice_note").val();
   purchase_invoice.total_ammount= 0;
@@ -499,13 +497,13 @@ if(!find){
 setvalueinput();
         });
 }
-
 }
 });
     </script>
       <script type="text/javascript">
     $(document).ready(function() {
        $("#submit").on("click", function (event) {
+
          $("#ammount_cach").html("$"+total_discount_ammount.toFixed(3));
          $('#exampleModalCenter').modal('show');
 

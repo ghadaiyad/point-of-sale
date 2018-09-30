@@ -21,19 +21,19 @@
             </li>
             <li>
                 <a href="../Pages/salesbooks.php"><i class="sidebar-item-icon ti-pie-chart"></i>
-                    <span class="nav-label">إستعلامات مبيعات الكتب<span>
+                    <span class="nav-label">إستعلامات مبيعات اصناف<span>
                 </a>
             </li>
               <li class="heading">المستودعات</li>
             <li>
-                <a href="../Pages/addbook&group.php"><i class="sidebar-item-icon ti-book"></i>
-                    <span class="nav-label">تعريف كتاب و قسم جديد<span>
+                <a href="../Pages/additem&group.php"><i class="sidebar-item-icon ti-book"></i>
+                    <span class="nav-label">تعريف صنف و مجموعة جديد<span>
                 </a>
             </li>
 
             <li>
                 <a href="../Pages/Delete&EditItems.php"><i class="sidebar-item-icon ti-trash"></i>
-                    <span class="nav-label">تعديل وحذف كتاب و قسم <span>
+                    <span class="nav-label">تعديل وحذف صنف و مجموعة <span>
                 </a>
             </li>
             <li>
@@ -42,11 +42,16 @@
                 </a>
             </li>
             <li>
-                <a href="MovementRep.php"><i class="sidebar-item-icon ti-exchange-vertical"></i>
-                    <span class="nav-label">إستعلامات مشتريات الكتب<span>
+                <a href="purchasesInvoices.php"><i class="sidebar-item-icon ti-exchange-vertical"></i>
+                    <span class="nav-label">استعلامات فواتير المشتريات<span>
                 </a>
             </li>
             <li class="heading">--------</li>
+            <li>
+                <a href="../Pages/AddAcount.php"><i class="sidebar-item-icon ti-stamp"></i>
+                    <span class="nav-label">تعريف حساب جديد</span>
+                </a>
+            </li>
             <li>
                 <a href="../Pages/register.php"><i class="sidebar-item-icon ti-stamp"></i>
                     <span class="nav-label">تعريف مستتخدم جديد</span>
