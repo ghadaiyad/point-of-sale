@@ -21,3 +21,7 @@ th{
   overflow-y: auto;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 }
+span[Attributes Style] {
+    direction: rtl;
+    unicode-bidi: isolate;
+}

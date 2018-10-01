@@ -78,7 +78,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 
 
                  <div class="page-heading">
-                     <h1 class="page-title font-weight-bold">حذف وتعديل بيانات الكتب و اقسام</h1>
+                     <h1 class="page-title font-weight-bold">حذف وتعديل بيانات اصناف و المجموعات</h1>
                      <ol class="breadcrumb">
                          <li class="breadcrumb-item">
                              <a href="dashborad.php"><i class="la la-home font-20"></i> الرئيسية </a>
@@ -93,75 +93,53 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 
                                            <div class="ibox">
                                                <div class="ibox-head">
-                                                   <div class="ibox-title">تعديل و حذف بيانات الكتب</div>
+                                                   <div class="ibox-title">تعديل و حذف بيانات اصناف</div>
                                                  <div class="ibox-tools">
                                                      <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
                                                  </div>
                                                </div>
-
-
                                           <div class="ibox-body">
-                                              <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
+                                            <div class="form-group row">
+                                              <label class="col-2 col-form-label">المجموعات</label>
+                                              <select class="form-control select2_demo_2 col-3 " name="group_items" id="group_items">
+<option></option>
+                                                    <?php
+                                                    $sql = "SELECT * FROM group_items";
+                                              $result = $conn->query($sql);
+
+                                              if ($result->num_rows > 0) {
+                                              // output data of each row
+                                              while($row = $result->fetch_assoc()) {
+                                              ?>
+                                              <option value=<?= $row["id"]; ?>>
+                                              <?= $row["name"]; ?>
+                                              </option>
+                                              <?php
+                                              }
+
+                                              } else {
+                                              echo "لا يوجد شيئ لعرض ........ <i class='mdi mdi-heart text-red'></i>";
+                                              }
+                                              ?>
+                                              </select>
+                                          </div>
+                                              <table class="table table-striped table-bordered table-hover" id="items-table" cellspacing="0" width="100%">
                                                   <thead>
                                                       <tr>
-                                                          <th>رقم</th>
-                                                        <th>اسم</th>
-                                                        <th>المؤلف</th>
-                                                        <th>المجموعة</th>
-                                                        <th>رقم الطبع</th>
-                                                                  <th>سعر الشراء</th>
-                                                                  <th>سعر البيع</th>
-                                                                      <th>ملاحظات</th>
-                                                                      <th>#</th>
+                                                        <th>رقم</th>
+                                                        <th>اسم الصنف </th>
+                                                        <th>رقم المصنعية</th>
+                                                        <th>المنشأ</th>
+                                                        <th>سعر الشراء</th>
+                                                        <th>سعر البيع</th>
+                                                        <th>المتوفر</th>
+                                                        <th>الحد الادنى</th>
+                                                        <th>السعر الضربي</th>
+                                                        <th>ملاحظات</th>
+                                                        <th>###</th>
                                                       </tr>
                                                   </thead>
-                                                  <tfoot>
-                                                      <tr>
-                                                        <th>رقم</th>
-                                                        <th>اسم</th>
-                                                        <th>المؤلف</th>
-                                                        <th>المجموعة</th>
-                                                        <th>رقم الطبع</th>
-                                                                  <th>سعر الشراء</th>
-                                                                  <th>سعر البيع</th>
-                                                                      <th>ملاحظات</th>
-                                                                      <th>#</th>
-                                                      </tr>
-                                                  </tfoot>
                                                   <tbody>
-
-                                                    <?php
-                              											$sql = "SELECT I.id ,I.name   ,I.cost_price, I.sale_price ,I.total_qty ,I.note , GI.name as nn
-                                                     FROM items I , group_items GI where  GI.id = I.group_items_id";
-                                                     $result = $conn->query($sql);
-                                                     if (!$result) {
-                                            printf("Errormessage: %s\n", $mysqli->error);
-                                         }
-
-                                      while($row = mysqli_fetch_assoc($result)) {
-                              			?>
-                              			<tr>
-                                    <td><?= $row["id"]; ?></td>
-                                      <td><?= $row["name"]; ?></td>
-                                      <td></td>
-                                      <td><?= $row["nn"]; ?></td>
-                                      <td></td>
-                                      <td><?= number_format($row["cost_price"],3); ?> $</td>
-                                            	<td><?= number_format($row["sale_price"],3); ?> $</td>
-                                                <td><?= $row["note"]; ?></td>
-                                      <td>
-                    <button type="button" id="editbutton" class="btn btn-default btn-xs m-r-5" data-toggle="modal" data-target="#exampleModal" data-whatever=""><i class="fa fa-pencil font-14"></i></button>
-                                        <a href="?itemIdDeleted=<?= $row['id'];?>">
-                                          <button class="btn btn-default btn-xs" data-toggle="tooltip" data-original-title="Delete"><i class="fa fa-trash font-14"></i></button>
-                                        </a>
-                                      </td>
-                                    </tr>
-                              			<?php
-                                  }
-                            //  $conn->close();
-                              ?>
-
-
                                                   </tbody>
                                               </table>
                                           </div>
@@ -254,9 +232,9 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
                                               <label class="col-sm-2 col-form-label">القسم او المجموعة</label>
                                               <div class="col-sm-10">
                                               <select class="form-control" name="group_itemss" id="group_itemss">
-                                                  <optgroup label="الكتب">
+                                                  <optgroup label="اصناف">
                                                     <?php
-                                                    $sql = "SELECT * FROM group_itemss";
+                                                    $sql = "SELECT * FROM group_items";
                                               $result = $conn->query($sql);
 
                                               if ($result->num_rows > 0) {
@@ -355,15 +333,15 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 
 
                                            <div class="form-group row">
-                                               <label class="col-sm-2 col-form-label">الاسم المجموعة</label>
-                                               <div class="col-sm-9">
+                                               <label class="col-sm-3 col-form-label">الاسم المجموعة</label>
+                                               <div class="col-sm-8">
                                                    <input class="form-control" type="text" id="groupname" name="groupname">
                                                </div>
                                            </div>
 
                                            <div class="form-group row">
-                                               <label class="col-sm-2 col-form-label">ملاحظات :  </label>
-                                               <div class="col-sm-9">
+                                               <label class="col-sm-3 col-form-label">ملاحظات :  </label>
+                                               <div class="col-sm-8">
                                                    <input class="form-control" type="text" id="groupnote" name="groupnote">
                                                </div>
                                            </div>
@@ -400,6 +378,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
     <!-- PAGE LEVEL SCRIPTS-->
     <script type="text/javascript">
     <?= $script ?>
+
         $('#Groupitems-table').DataTable({
           pageLength: 20,
           "language": {
@@ -451,7 +430,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
        event.preventDefault();
        $.ajax({
            type: 'POST',
-           url: '../Operations/updatagroupitemss.php',
+           url: '../Operations/updatagroupitems.php',
            data: $(this).serialize()
        })
        .done(function(data){
@@ -479,20 +458,91 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
     </script>
 <script type="text/javascript">
 <?= $script ?>
-    $('#example-table').DataTable({
-      pageLength: 10,
-      "language": {
-"search": "بحث عن الكتب :",
-"lengthMenu": "عرض  _MENU_ صفوف",
-  "zeroRecords": "لا يوجد بيانات ",
-  "info": "النتائج _PAGE_ في _PAGES_",
-  "infoEmpty": "لا يوجد بيانات لعرضها",
-  "infoFiltered": "(تم البحث  _MAX_ من جميع البيانات)"
-}
+var table =   $('#items-table').DataTable({
+  "ordering": false,
+    "language" :
+        {
+            "decimal": "1",
+            "emptyTable": "لا يوجد بيانات في نتائج البحث",
+            "info": "عرض _START_ الى _END_ من _TOTAL_ مدخلات",
+            "infoEmpty": "تم عرض 0 الى 0 من 0 مدخلات",
+            "infoFiltered": "(تصنيف من _MAX_ جميع المدخلات)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "عرض _MENU_ البيانات",
+            "loadingRecords": "الرجاء انتظار...",
+            "processing": "جاري البحث...",
+            "search": "بحث",
+            "zeroRecords": "لا يطابق البحث اي نتائج",
+            "paginate": {
+                "first": "الاول",
+                "last": "الاخير",
+                "next": "التالي",
+                "previous": "السابق"
+            },
+            "aria": {
+                "sortAscending": ": activate to sort column ascending",
+                "sortDescending": ": activate to sort column descending"
+            }
+        },
+        columns: [
+      {    'data' : 'id' },
+      {   'data': 'name'},
+      {   'data': 'number_items'},
+      {  'data': 'origin'},
+      {  'data': 'cost_price'},
+      {   'data': 'sale_price'},
+      { 'data': 'total_qty'},
+      {'data': 'low_order'},
+      { 'data': 'rate'},
+      { 'data': 'note'},
+      {  'data': '#'}
+        ]
+});
+$( "#group_items" ).change(function() {
+                       var str = $(this).val();
+                      var url ="../Operations/GetItemsList.php?q="+str+"";
+                      $.get(url, function(json) {
+                        json = JSON.parse(json);
+                        var return_data = new Array();
+                        for(var i=0;i< json.length; i++){
+                          return_data.push({
+                         'id' : json[i].id,
+                        'name': json[i].name,
+                        'number_items': json[i].number_items,
+                       'origin': json[i].origin,
+                       'cost_price': json[i].cost_price.toFixed(3),
+                      'sale_price': json[i].sale_price.toFixed(3),
+                      'total_qty': json[i].total_qty,
+                     'low_order': json[i].low_order,
+                      'rate': 0.007*(json[i].rate.toFixed(3)),
+                      'note': json[i].note,
+                      '#' : '<button type="button" id="editbutton" class="btn btn-default btn-xs m-r-5" data-toggle="modal" data-target="#exampleModal" data-whatever=""><i class="fa fa-pencil font-14"></i></button>  <a href=?itemIdDeleted='+json[i].id+'><button class="btn btn-default btn-xs" data-toggle="tooltip" data-original-title="Delete"><i class="fa fa-trash font-14"></i></button></a>'
+                            });
+                        }
+                          console.log(return_data);
+                      table.clear();
+                      table.rows.add(return_data);
+                        table.draw();
+                    });
+  });
+                    $('#items-table thead th').each(function () {
+                        var title = $(this).text();
+                        $(this).html('<input type="text" class="form-control input-sm col-10 " placeholder="' + title + '" />');
+                    });
 
-    });
+                    // Apply the search
+                    table.columns().every(function () {
+                        var that = this;
 
-var table = $('#example-table').DataTable();
+                        $('input', this.header()).on('keyup change', function () {
+                            if (that.search() !== this.value) {
+                                that
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
 
 $('#example-table tbody').on( 'click', '#editbutton', function () {
 var items_id = $(this).closest('tr').find('td:eq(0)').html();

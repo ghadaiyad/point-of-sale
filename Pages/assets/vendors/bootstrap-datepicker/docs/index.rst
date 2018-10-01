@@ -72,7 +72,7 @@ Configuration
 :doc:`options` are passed to the ``datepicker`` function via an options hash at instantiation::
 
     $('.datepicker').datepicker({
-        format: 'mm/dd/yyyy',
+        format: 'dd/mm/yyyy',
         startDate: '-3d'
     });
 
@@ -80,7 +80,7 @@ Most options may be provided as data-attributes on the target element:
 
 .. code-block:: html
 
-    <input class="datepicker" data-date-format="mm/dd/yyyy">
+    <input class="datepicker" data-date-format="dd/mm/yyyy">
 
 ::
 
@@ -90,7 +90,7 @@ Most options may be provided as data-attributes on the target element:
 
 Defaults for all options can be modified directly by changing values in the ``$.fn.datepicker.defaults`` hash::
 
-    $.fn.datepicker.defaults.format = "mm/dd/yyyy";
+    $.fn.datepicker.defaults.format = "dd/mm/yyyy";
     $('.datepicker').datepicker({
         startDate: '-3d'
     });

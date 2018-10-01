@@ -7,17 +7,19 @@ header('Content-Type: text/plain');
    $id_user=$_SESSION['user_ID'];
    $invoice_data = utf8_encode($_POST['invoice_data']);
    $invoice_data = json_decode($invoice_data);
-   echo $invoice_data->t_account_id;
    $inventory_data = $invoice_data->inventory;
+   $date = date_create($invoice_data->purchase_date);
+  $date=  date_format($date,"Y-m-d");
  $sql = "INSERT INTO purchases_invoice
- (total_ammount, total_qty, rate, payment_method, discount,purchases_date ,  posting_datatime, total_items, note,t_account_id, img ,User_id )
+ (purchases_id,total_ammount, total_qty, rate, payment_method, discount,purchases_date ,  posting_datatime, total_items, note,t_account_id, img ,User_id )
   VALUES (
+      $invoice_data->purchases_id,
     $invoice_data->total_ammount,
     $invoice_data->total_qty,
     $invoice_data->rate,
     $invoice_data->payment_method,
     $invoice_data->discount,
-    '$invoice_data->purchase_date',
+    '$date',
     '$time_log',
     $invoice_data->total_items,
     '$invoice_data->note',

@@ -138,7 +138,7 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
                           <label class="col-1 col-form-label">المورد</label>
                           <div class="col-3">
                           <select class="form-control select2_demo_2" name="tid" id="tid" >
-                              <option>اسم العميل</option>
+                            <option></option>
                                 <?php
                                 $sql = "SELECT * FROM t_accounts";
                           $result = $conn->query($sql);
@@ -184,13 +184,13 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
                       <div class="form-group row">
                           <label class="col-1 col-form-label">فاتورة رقم :</label>
                               <div class="col-3">
-                                <input class="form-control" type="text" placeholder="رقم فاتورة المورد ">
+                                <input class="form-control" type="text" name="purchases_id" id="purchases_id" placeholder="رقم فاتورة المورد ">
                       </div>
                       <div class="col-3" id="date_1">
                           <label class="col-form-label">تاريخ</label>
                           <div class="input-group date" >
                               <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-                              <input class="form-control" type="text" data-provide="datepicker" id="purchase_date" name="purchase_date" value="<?=date("Y-m-d ");?>">
+                              <input class="form-control" type="text" data-provide="datepicker" id="purchase_date" name="purchase_date" value="<?=date("d/m/Y ");?>">
                           </div>
                       </div>
                         <div class="col-3 ml-auto">
@@ -244,10 +244,9 @@ $new_Id_Invoice = $row['new_Id_Invoice'] + 1;
                                   <div class="col-6">
                                     <div class="ibox ibox-success">
                                               <div class="ibox-head">
-                                                        <label class="col-5 col-form-label">القسم او المجموعة</label>
-
+                                                        <label class="col-2 col-form-label">القسم او المجموعة: </label>
                                                         <select class="form-control select2_demo_2" name="group_items" id="group_items" >
-                                                            <option>المجموعة</option>
+                                                          <option></option>
                                                               <?php
                                                               $sql = "SELECT * FROM group_items";
                                                         $result = $conn->query($sql);
@@ -333,6 +332,7 @@ var total_discount_ammount;
     var purchase_invoice =
       {
         "id" :<?= $new_Id_Invoice ?>,
+        "purchases_id" :"",
         "t_account_id" :0,
         "total_ammount" :0,
         "total_qty" :0,
@@ -346,9 +346,6 @@ var total_discount_ammount;
         "purchase_date" :""
       };
   $(document).ready(function() {
-    $('#purchase_date').datepicker({
-    format: 'yyyy-mm-dd'
-});
     $('#items-table').dataTable({
       "paging":   false,
    "ordering": false,
@@ -424,6 +421,7 @@ $('#items_invoice tbody').on( 'change', '#items_price', function () {
 });
 function calucuatinvoice(){
   purchase_invoice.payment_method= parseInt($("#payment_method").val());
+  purchase_invoice.purchases_id= $("#purchases_id").val();
   purchase_invoice.rate=parseInt($("#rate").val());
   //alert(purchase_invoice.payment_method);
 purchase_invoice.t_account_id= $("#tid").val();
@@ -503,7 +501,6 @@ setvalueinput();
       <script type="text/javascript">
     $(document).ready(function() {
        $("#submit").on("click", function (event) {
-
          $("#ammount_cach").html("$"+total_discount_ammount.toFixed(3));
          $('#exampleModalCenter').modal('show');
 

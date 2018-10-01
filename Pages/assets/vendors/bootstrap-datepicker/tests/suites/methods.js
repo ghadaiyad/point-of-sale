@@ -167,7 +167,7 @@ test('moveMonth - can handle invalid date', function(){
 });
 
 test('parseDate - outputs correct value', function(){
-    var parsedDate = $.fn.datepicker.DPGlobal.parseDate('11/13/2015', $.fn.datepicker.DPGlobal.parseFormat('mm/dd/yyyy'), 'en');
+    var parsedDate = $.fn.datepicker.DPGlobal.parseDate('11/13/2015', $.fn.datepicker.DPGlobal.parseFormat('dd/mm/yyyy'), 'en');
     equal(parsedDate.getUTCDate(), "13", "date is correct");
     equal(parsedDate.getUTCMonth(), "10", "month is correct");
     equal(parsedDate.getUTCFullYear(), "2015", "fullyear is correct");

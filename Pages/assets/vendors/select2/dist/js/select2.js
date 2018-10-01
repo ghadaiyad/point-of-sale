@@ -4974,7 +4974,7 @@ S2.define('select2/options',[
       } else if ($e.closest('[dir]').prop('dir')) {
         this.options.dir = $e.closest('[dir]').prop('dir');
       } else {
-        this.options.dir = 'ltr';
+        this.options.dir = 'rtl';
       }
     }
 

@@ -4974,7 +4974,7 @@ S2.define('select2/options',[
       } else if ($e.closest('[dir]').prop('dir')) {
         this.options.dir = $e.closest('[dir]').prop('dir');
       } else {
-        this.options.dir = 'ltr';
+        this.options.dir = 'rtl';
       }
     }
 
@@ -5461,7 +5461,7 @@ S2.define('select2/core',[
    * there are events that can be prevented.
    */
   Select2.prototype.trigger = function (name, args) {
-    var actualTrigger = Select2.__super__.trigger;
+    var actuartligger = Select2.__super__.trigger;
     var preTriggerMap = {
       'open': 'opening',
       'close': 'closing',
@@ -5481,7 +5481,7 @@ S2.define('select2/core',[
         args: args
       };
 
-      actualTrigger.call(this, preTriggerName, preTriggerArgs);
+      actuartligger.call(this, preTriggerName, preTriggerArgs);
 
       if (preTriggerArgs.prevented) {
         args.prevented = true;
@@ -5490,7 +5490,7 @@ S2.define('select2/core',[
       }
     }
 
-    actualTrigger.call(this, name, args);
+    actuartligger.call(this, name, args);
   };
 
   Select2.prototype.toggleDropdown = function () {

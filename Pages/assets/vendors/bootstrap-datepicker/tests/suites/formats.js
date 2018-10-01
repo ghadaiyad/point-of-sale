@@ -272,7 +272,7 @@ test('Assume nearby year - last century', patch_date(function(Date){
     Date.now = UTCDate(2012, 4, 31);
     this.input
         .val('02/14/91')
-        .datepicker({format: 'mm/dd/yyyy', assumeNearbyYear: true})
+        .datepicker({format: 'dd/mm/yyyy', assumeNearbyYear: true})
         .datepicker('setValue');
     equal(this.input.val(), '02/14/1991');
 }));
@@ -281,7 +281,7 @@ test('Assume nearby year - this century (- 1 year)', patch_date(function(Date){
     Date.now = UTCDate(2012, 4, 31);
     this.input
         .val('02/14/01')
-        .datepicker({format: 'mm/dd/yyyy', assumeNearbyYear: true})
+        .datepicker({format: 'dd/mm/yyyy', assumeNearbyYear: true})
         .datepicker('setValue');
     equal(this.input.val(), '02/14/2001');
 }));
@@ -290,7 +290,7 @@ test('Assume nearby year - this century (+ 7 years)', patch_date(function(Date){
     Date.now = UTCDate(2012, 4, 31);
     this.input
         .val('02/14/19')
-        .datepicker({format: 'mm/dd/yyyy', assumeNearbyYear: true})
+        .datepicker({format: 'dd/mm/yyyy', assumeNearbyYear: true})
         .datepicker('setValue');
     equal(this.input.val(), '02/14/2019');
 }));
@@ -299,7 +299,7 @@ test('Assume nearby year - this century (+ 13 years)', patch_date(function(Date)
     Date.now = UTCDate(2012, 4, 31);
     this.input
         .val('02/14/23')
-        .datepicker({format: 'mm/dd/yyyy', assumeNearbyYear: true})
+        .datepicker({format: 'dd/mm/yyyy', assumeNearbyYear: true})
         .datepicker('setValue');
     equal(this.input.val(), '02/14/1923');
 }));
@@ -308,7 +308,7 @@ test('Assume nearby year - this century (+ 13 years, threshold = 30)', patch_dat
     Date.now = UTCDate(2012, 4, 31);
     this.input
         .val('02/14/23')
-        .datepicker({format: 'mm/dd/yyyy', assumeNearbyYear: 30})
+        .datepicker({format: 'dd/mm/yyyy', assumeNearbyYear: 30})
         .datepicker('setValue');
     equal(this.input.val(), '02/14/2023');
 }));

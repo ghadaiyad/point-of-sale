@@ -14,6 +14,6 @@
 		monthsTitle: "মাস",
 		clear: "পরিষ্কার",
 		weekStart: 0,
-		format: "mm/dd/yyyy"
+		format: "dd/mm/yyyy"
 	};
 }(jQuery));

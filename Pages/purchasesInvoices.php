@@ -57,10 +57,10 @@ if (!isset($_SESSION['user_ID'])){
                                   <div class="row">
                                   <div class="form-group col-12" id="date_5">
                                       <label class="font-normal">بحث حسب التاريخ</label>
-                                      <div class="input-daterange input-group"  >
-                                          <input class="input-sm form-control datepicker" type="text" name="min" data-date-format="yyyy-mm-dd" value="01/01/2018" id="min">
+                                      <div class="input-daterange input-group">
+                                          <input class="input-sm form-control datepicker" type="text" name="min" value="01/01/2018" id="min">
                                           <span class="input-group-addon p-l-10 p-r-10">الى</span>
-                                          <input class="input-sm form-control datepicker" type="text" name="max"  data-date-format="yyyy-mm-dd" value="12/31/2018" id="max" >
+                                          <input class="input-sm form-control datepicker" type="text" name="max" value="01/12/2018" id="max" >
                                       </div>
                                   </div>
                                       </div>
@@ -70,16 +70,14 @@ if (!isset($_SESSION['user_ID'])){
                                   <table class="table table-sm table-striped table-bordered table-hover" id="invoice-table" >
                                       <thead>
                                           <tr>
-                                            <th>#</th>
                                               <th>رقم</th>
                                               <th>المورد</th>
                                               <th>التاريخ</th>
                                               <th>المبلغ الاجمالي</th>
+                                                <th>#</th>
                                           </tr>
                                       </thead>
-
                                       <tbody>
-
                                       </tbody>
                                   </table>
                                     </div>
@@ -109,11 +107,6 @@ if (!isset($_SESSION['user_ID'])){
                 <!-- PAGE LEVEL SCRIPTS-->
                 <script type="text/javascript">
                 $(document).ready(function () {
-                  $('#min').datepicker({
-                    format: 'yyyy-mm-dd',
-                      startDate: '-3d'
-                  });
-
                     var table =   $('#invoice-table').DataTable({
                       "ordering": false,
                         "language" :
@@ -142,16 +135,25 @@ if (!isset($_SESSION['user_ID'])){
                                 }
                             },
                             columns: [
-                                { "data": '#' },
+
                               { "data": 'id' },
                               { "data": 'name' },
                               { "data": 'date' },
-                                { "data": 'total' }
+                                { "data": 'total' },
+                                    { "data": '#' }
                             ]
                     });
 
                     // DataTable
-
+                    function formatDate(date) {
+                        var d = new Date(date),
+                          day = '' + d.getDate(),
+                            month = '' + (d.getMonth() + 1),
+                            year = d.getFullYear();
+                        if (month.length < 2) month = '0' + month;
+                        if (day.length < 2) day = '0' + day;
+                        return [day, month ,year ].join('/');
+                    }
                        var str = $(this).val();
                       var url ="../Operations/GetPurchasesInvoice.php?q=0";
                       $.get(url, function(json) {
@@ -159,11 +161,11 @@ if (!isset($_SESSION['user_ID'])){
                         var return_data = new Array();
                         for(var i=0;i< json.length; i++){
                           return_data.push({
-                            '#':'  <button class="btn btn-default btn-xs" data-toggle="tooltip" data-original-title="Delete"><i class="fa fa-eye font-14"></i></button>',
                          'id' : json[i].id,
                         'name': json[i].name,
-                        'date': json[i].purchases_date,
-                       'total': json[i].total_ammount
+                        'date': formatDate(json[i].purchases_date),
+                       'total': json[i].total_ammount,
+                         '#':'  <button class="btn btn-default btn-xs" data-toggle="tooltip" data-original-title="Delete"><i class="fa fa-eye font-14"></i></button>'
                             });
                         }
                           console.log(return_data);
@@ -181,7 +183,6 @@ if (!isset($_SESSION['user_ID'])){
                     // Apply the search
                     table.columns().every(function () {
                         var that = this;
-
                         $('input', this.header()).on('keyup change', function () {
                             if (that.search() !== this.value) {
                                 that
@@ -192,13 +193,9 @@ if (!isset($_SESSION['user_ID'])){
                     });
                     $.fn.dataTable.ext.search.push(
                     function (settings, data, dataIndex) {
-                        $("#min").datepicker({
-                          Format: "yyyy-mm-dd"});
-                        $("#max").datepicker({
-                          Format: "yyyy-mm-dd"});
                       var min = $('#min').datepicker("getDate");
                         var max = $('#max').datepicker("getDate");
-                        var startDate = new Date(data[3]);
+                        var startDate = new Date(data[2]);
                         if (min == null && max == null) { return true; }
                         if (min == null && startDate <= max) { return true; }
                         if (max == null && startDate >= min) { return true; }
@@ -206,8 +203,8 @@ if (!isset($_SESSION['user_ID'])){
                         return false;
                     }
                     );
-                    $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true, dateFormat: "yyyy-mm-dd"});
-                    $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true, dateFormat: "yyyy-mm-dd" });
+                    $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+                    $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
                     // Event listener to the two range filtering inputs to redraw on input
                     $('#min, #max').change(function () {
                         table.draw();

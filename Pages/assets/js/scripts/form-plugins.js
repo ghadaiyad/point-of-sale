@@ -3,7 +3,7 @@ $(document).ready(function(){
     // Select 2
     $(".select2_demo_1").select2();
     $(".select2_demo_2").select2({
-        placeholder: "Select a state",
+        placeholder: "الرجاء اختيار",
         allowClear: true
     });
 
@@ -59,7 +59,7 @@ $(document).ready(function(){
             position: $(this).attr('data-position') || 'bottom left',
         });
     });
-    
+
     // jQuery Knob
     $(".dial").knob();
 

@@ -239,7 +239,7 @@ Whether or not to force parsing of the input value when the picker is closed.  T
 format
 ------
 
-String.  Default: "mm/dd/yyyy"
+String.  Default: "dd/mm/yyyy"
 
 The date format, combination of d, dd, D, DD, m, mm, M, MM, yy, yyyy.
 
@@ -543,7 +543,7 @@ disableTouchKeyboard         false
 enableOnReadonly             true
 endDate                      Infinity
 forceParse                   true
-format                       'mm/dd/yyyy'
+format                       'dd/mm/yyyy'
 immediateUpdates             false
 inputs
 keepEmptyValues              false

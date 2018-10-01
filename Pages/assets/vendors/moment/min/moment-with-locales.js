@@ -425,7 +425,7 @@ function calendar (key, mom, now) {
 var defaultLongDateFormat = {
     LTS  : 'h:mm:ss A',
     LT   : 'h:mm A',
-    L    : 'MM/DD/YYYY',
+    L    : 'dd/mm/yyyy',
     LL   : 'MMMM D, YYYY',
     LLL  : 'MMMM D, YYYY h:mm A',
     LLLL : 'dddd, MMMM D, YYYY h:mm A'
@@ -7191,7 +7191,7 @@ hooks.defineLocale('es-us', {
     longDateFormat : {
         LT : 'h:mm A',
         LTS : 'h:mm:ss A',
-        L : 'MM/DD/YYYY',
+        L : 'dd/mm/yyyy',
         LL : 'MMMM [de] D [de] YYYY',
         LLL : 'MMMM [de] D [de] YYYY h:mm A',
         LLLL : 'dddd, MMMM [de] D [de] YYYY h:mm A'
