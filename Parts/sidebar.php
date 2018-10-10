@@ -8,11 +8,13 @@
                 <div class="font-strong"><?= $_SESSION['user_Name']; ?></div><small>مستخدم</small></div>
         </div>
         <ul class="side-menu metismenu">
+
             <li>
                 <a class="active" href="../pages/dashborad.php"><i class="sidebar-item-icon fa fa-th-large"></i>
                     <span class="nav-label">الرئيسية</span>
                 </a>
             </li>
+            <!--
             <li class="heading">المبيعات</li>
             <li>
                 <a href="../Pages/Sales.php"><i class="sidebar-item-icon ti-export"></i>
@@ -24,6 +26,7 @@
                     <span class="nav-label">إستعلامات مبيعات اصناف<span>
                 </a>
             </li>
+          -->
               <li class="heading">المستودعات</li>
             <li>
                 <a href="../Pages/additem&group.php"><i class="sidebar-item-icon ti-book"></i>
@@ -43,6 +46,11 @@
             </li>
             <li>
                 <a href="purchasesInvoices.php"><i class="sidebar-item-icon ti-exchange-vertical"></i>
+                    <span class="nav-label">استعلامات فواتير المشتريات<span>
+                </a>
+            </li>
+            <li>
+                <a href="itemsPurchases.php"><i class="sidebar-item-icon ti-exchange-vertical"></i>
                     <span class="nav-label">استعلامات فواتير المشتريات<span>
                 </a>
             </li>
